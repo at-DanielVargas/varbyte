@@ -1,28 +1,39 @@
-const emailjs = require("@emailjs/nodejs");
+const fetch = require("node-fetch");
 
 exports.handler = async function (event, context) {
   try {
     const { name, email, message } = JSON.parse(event.body);
 
-    emailjs.init({
-      publicKey: process.env.EMAILJS_PUBLIC_KEY,
-      privateKey: process.env.EMAILJS_PRIVATE_KEY,
-    });
-
-    const response = await emailjs.send(
-      process.env.EMAILJS_SERVICE_ID,
-      process.env.EMAILJS_TEMPLATE_ID,
+    const response = await fetch(
+      "https://api.emailjs.com/api/v1.0/email/send ",
       {
-        from_name: name,
-        from_email: email,
-        to_email: process.env.EMAILJS_TO_EMAIL,
-        message: message,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service_id: process.env.EMAILJS_SERVICE_ID,
+          template_id: process.env.EMAILJS_TEMPLATE_ID,
+          user_id: process.env.EMAILJS_PUBLIC_KEY,
+          template_params: {
+            from_name: name,
+            from_email: email,
+            to_email: process.env.EMAILJS_TO_EMAIL,
+            message: message,
+          },
+        }),
       }
     );
 
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.text || "Error al enviar el correo");
+    }
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, data: response }),
+      body: JSON.stringify({ success: true, data: result }),
     };
   } catch (error) {
     console.error(error);
