@@ -1,39 +1,25 @@
-import fetch from "node-fetch";
+import { Resend } from "resend";
 
-exports.handler = async function (event, context) {
+export const handler = async function (event) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const { name, email, message } = JSON.parse(event.body);
 
-    const response = await fetch(
-      "https://api.emailjs.com/api/v1.0/email/send ",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          service_id: process.env.EMAILJS_SERVICE_ID,
-          template_id: process.env.EMAILJS_TEMPLATE_ID,
-          user_id: process.env.EMAILJS_PUBLIC_KEY,
-          template_params: {
-            from_name: name,
-            from_email: email,
-            to_email: process.env.EMAILJS_TO_EMAIL,
-            message: message,
-          },
-        }),
-      }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.text || "Error al enviar el correo");
-    }
+    const data = await resend.emails.send({
+      from: "contact@varbyte.dev",
+      to: process.env.EMAILJS_TO_EMAIL,
+      subject: `Nuevo mensaje de contacto de ${name}`,
+      html: `
+        <h3>Nuevo mensaje de contacto</h3>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mensaje:</strong> ${message}</p>
+      `,
+    });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, data: result }),
+      body: JSON.stringify({ success: true, data }),
     };
   } catch (error) {
     console.error(error);
