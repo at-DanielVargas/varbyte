@@ -1,0 +1,68 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="hero" class="min-h-screen flex items-center justify-center px-6">
+  <div class="max-w-4xl w-full">
+    <div class="animate-fade-in">
+      <div class="font-mono text-sm text-gray-500 mb-4">
+        {t("hero.comment")}
+      </div>
+      <h1 class="font-mono text-5xl md:text-7xl font-bold mb-6 leading-tight">
+        {t("hero.presentation")}{" "}
+        <span class="relative">
+          <span class="text-black">{t("hero.im")}</span>
+          <span class="animate-pulse">_</span>
+        </span>
+      </h1>
+
+      <div class="font-mono text-xl md:text-2xl text-gray-600 mb-8 space-y-2">
+        <div>
+          <span class="text-purple-600">const</span>
+          <span class="text-blue-700"> developer </span>
+          <span class="text-gray-700">=</span>
+          <span class="text-gray-700"> {"{"}</span>
+        </div>
+        <div class="ml-8">
+          <span class="text-blue-700">frontend</span>
+          <span class="text-gray-700">: </span>
+          <span class="text-green-700">['React', 'TypeScript', 'Angular']</span>
+          <span class="text-gray-700">,</span>
+        </div>
+        <div class="ml-8">
+          <span class="text-blue-700">backend</span>
+          <span class="text-gray-700">: </span>
+          <span class="text-green-700">['Node.js', 'PHP']</span>
+          <span class="text-gray-700">,</span>
+        </div>
+        <div class="ml-8">
+          <span class="text-blue-700">passion</span>
+          <span class="text-gray-700">: </span>
+          <span class="text-pink-700">{t("hero.passion")}</span>
+        </div>
+        <div>
+          <span class="text-gray-700">{"}"}</span>
+        </div>
+      </div>
+      <div class="font-mono text-lg text-gray-500 mb-12">
+        {t("hero.description")}
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a
+          href="#projects"
+          class="font-mono px-8 py-3 bg-black text-white hover:bg-gray-800 transition-colors border border-black"
+        >
+          {t("hero.projects.button")}
+        </a>
+        <a
+          href="#contact"
+          class="font-mono px-8 py-3 border border-black hover:bg-black hover:text-white transition-colors"
+        >
+          {t("hero.contact.button")}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

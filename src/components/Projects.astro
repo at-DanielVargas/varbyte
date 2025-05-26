@@ -1,0 +1,149 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const projects = [
+  {
+    id: 1,
+    title: {
+      es: "Noto - Aplicación de Notas",
+      en: "Noto - notes app",
+    },
+    description: {
+      es: "Aplicación de notas simple y minimalista. Permite crear, editar y eliminar notas.",
+      en: "Simple and minimalist notes app. Allows you to create, edit and delete notes.",
+    },
+    tech: ["React", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/at-DanielVargas/noto",
+    demo: "https://notoapp.netlify.app/",
+    status: "completed",
+    type: "frontend",
+  },
+  {
+    id: 2,
+    title: {
+      es: "In-Vento - Aplicación de Inventario",
+      en: "In-Vento - Inventory app",
+    },
+    description: {
+      es: "Aplicación de inventario para gestionar productos y sus cantidades. Permite agregar, editar y eliminar productos.",
+      en: "Inventory app to manage products and their quantities. Allows you to add, edit and delete products.",
+    },
+    tech: ["React", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/at-DanielVargas/in-vento",
+    demo: "https://in-vento.netlify.app/",
+    status: "in-progress",
+    type: "frontend",
+  },
+  {
+    id: 3,
+    title: {
+      es: "Coffee Gallery - Aplicación de compra de café",
+      en: "Coffee Gallery - Image Gallery app",
+    },
+    description: {
+      es: "Aplicación móvil para comprar café. Permite ver imágenes de diferentes tipos de café y realizar pedidos.",
+      en: "Mobile app to buy coffee. Allows you to view images of different types of coffee and place orders.",
+    },
+    tech: ["React-Native", "TypeScript"],
+    github: "https://github.com/at-DanielVargas/coffee-gallery",
+    demo: null,
+    status: "completed",
+    type: "Mobile",
+  },
+  {
+    id: 3,
+    title: {
+      en: "Ghostpoint - mock api endpoints",
+      es: "Ghostpoint - mock api endpoints",
+    },
+    description: {
+      en: "Ghostpoint is a mock API service that allows you to create and manage mock endpoints for testing and development purposes.",
+      es: "Ghostpoint es un servicio de API simulada que te permite crear y gestionar endpoints simulados para propósitos de prueba y desarrollo.",
+    },
+    tech: ["Nestjs", "SQLite", "TypeScript", "React", "Tailwind CSS"],
+    github: "https://github.com/at-DanielVargas/ghostpoint",
+    demo: null,
+    status: "in-progress",
+    type: "fullstack",
+  },
+];
+---
+
+<section id="projects" class="py-20 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="animate-slide-up">
+      <div class="font-mono text-sm text-gray-500 mb-4">
+        {t("projects.comment")}
+      </div>
+      <h2 class="font-mono text-3xl md:text-4xl font-bold mb-12">
+        {t("nav.projects")}
+      </h2>
+
+      <div class="space-y-8">
+        {
+          projects.map((project, index) => (
+            <div
+              class="bg-white border border-gray-200 p-8 hover:border-gray-400 transition-colors group"
+              style={{ animationDelay: `${index * 0.2}s` }}
+            >
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <h3 class="font-mono text-xl font-semibold mb-2 md:mb-0">
+                  {project.title[lang]}
+                </h3>
+                <div class="flex items-center space-x-4">
+                  <span class="font-mono text-xs px-2 py-1 border">
+                    {project.type}
+                  </span>
+                  <span
+                    class={`font-mono text-xs px-2 py-1 border ${
+                      project.status === "completed"
+                        ? "bg-green-50 text-green-700 border-green-200"
+                        : "bg-yellow-50 text-yellow-700 border-yellow-200"
+                    }`}
+                  >
+                    {project.status === "completed"
+                      ? "completed"
+                      : "in-progress"}
+                  </span>
+                </div>
+              </div>
+
+              <p class="font-mono text-gray-600 mb-6 leading-relaxed">
+                {project.description[lang]}
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                {project.tech.map((tech) => (
+                  <span class="font-mono text-xs bg-gray-100 text-gray-700 px-3 py-1 border border-gray-200">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <div class="flex space-x-4">
+                <a
+                  href={project.github}
+                  class="font-mono text-sm border border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+                  target="_blank"
+                >
+                  {t("projects.git.button")}
+                </a>
+                {project.demo && (
+                  <a
+                    href={project.demo}
+                    class="font-mono text-sm bg-black text-white px-4 py-2 hover:bg-gray-800 transition-colors"
+                    target="_blank"
+                  >
+                    {t("projects.demo.button")}
+                  </a>
+                )}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
